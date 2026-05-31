@@ -37,7 +37,7 @@ $urgent_tasks = $stmt->fetchAll();
       <span></span>
     </div>
     <div class="topbar-left">
-      <a href="/index.html">
+      <a href="/index.php">
         <img src="/ASSETS/logo.svg" class="topbar-icon">
         <span>Student Productivity Hub</span>
       </a>
@@ -51,7 +51,7 @@ $urgent_tasks = $stmt->fetchAll();
     <nav class="navigation">
       <ul>
         <li>
-          <a href="/api/api.php">
+          <a href="/index.php">
             <img src="/ASSETS/dashboard.svg" class="nav-icon" alt="home">
             DASHBOARD
           </a>
