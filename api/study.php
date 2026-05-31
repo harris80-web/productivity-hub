@@ -35,7 +35,7 @@ $study_tasks = $stmt->fetchAll();
   </div>
   <div class="topbar-left">
     <a href="/index.html">
-    <img src="ASSETS/logo.svg" class="topbar-icon">
+    <img src="/ASSETS/logo.svg" class="topbar-icon">
     <span>Student Productivity Hub</span>
     </a>
   </div>
@@ -56,7 +56,7 @@ $study_tasks = $stmt->fetchAll();
 
         <li class="dropdown">
           <div class="dropdown-header" id="tasksDropdown">
-            <img src="ASSETS/task.svg" class="nav-icon" alt="tasks">
+            <img src="/ASSETS/task.svg" class="nav-icon" alt="tasks">
             <span>TASKS</span>
             <span class="arrow">▼</span>
           </div>
@@ -64,21 +64,21 @@ $study_tasks = $stmt->fetchAll();
           <ul class="submenu">
             <a href="/api/study.php">
               <li class="active">
-                <img src="ASSETS/study.svg" class="nav-icon" alt="study">
+                <img src="/ASSETS/study.svg" class="nav-icon" alt="study">
                 STUDY
               </li>
             </a>
             
             <a href="/api/general.php">
             <li>
-              <img src="ASSETS/general.svg" class="nav-icon" alt="study">
+              <img src="/ASSETS/general.svg" class="nav-icon" alt="study">
               GENERAL
             </li>
             </a>
 
             <a href="/api/urgent.php">
             <li>
-              <img src="ASSETS/urgent.svg" class="nav-icon" alt="study">
+              <img src="/ASSETS/urgent.svg" class="nav-icon" alt="study">
               URGENT
             </li>
             </a>
@@ -99,7 +99,7 @@ $study_tasks = $stmt->fetchAll();
           <input type="text" id="taskName" name="task_name" required>
 
           <button type="button" id="aiSuggestBtn" class="ai-suggest-btn" aria-label="AI Suggest">
-            <img src="ASSETS/AI-icon.svg" alt="AI" />
+            <img src="/ASSETS/AI-icon.svg" alt="AI" />
           </button>
         </div>
 
@@ -212,10 +212,10 @@ $study_tasks = $stmt->fetchAll();
       <section class="page-panel">
         <header class="panel-header">
           <div class="panel-title">
-            <img src="ASSETS/study2.svg" class="panel-icon" alt="study">
+            <img src="/ASSETS/study2.svg" class="panel-icon" alt="study">
             <h1>STUDY</h1>
           </div>
-          <img src="ASSETS/taskList.svg" alt="Task Icon" class="task-list-icon">
+          <img src="/ASSETS/taskList.svg" alt="Task Icon" class="task-list-icon">
         </header>
 
         <div class="panel-body">
@@ -240,8 +240,8 @@ $study_tasks = $stmt->fetchAll();
         </div>
     </div>
     <div class="task-actions">
-        <button class="edit-task-btn" data-task-id="<?php echo $task['id']; ?>"><img src="ASSETS/edit.svg" alt="Edit" /></button>
-        <button class="delete-task-btn" data-task-id="<?php echo $task['id']; ?>"><img src="ASSETS/delete.svg" alt="Delete" /></button>
+        <button class="edit-task-btn" data-task-id="<?php echo $task['id']; ?>"><img src="/ASSETS/edit.svg" alt="Edit" /></button>
+        <button class="delete-task-btn" data-task-id="<?php echo $task['id']; ?>"><img src="/ASSETS/delete.svg" alt="Delete" /></button>
     </div>
 </div>
                     <?php endforeach; ?>

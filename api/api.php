@@ -4,6 +4,7 @@ require_once __DIR__ . '/db_connection.php';
 header('Content-Type: application/json');
 
 function addTask($pdo) {
+    header('Content-Type: application/json');
     $stmt = $pdo->prepare(
         "INSERT INTO tasks (task_name, subject, task_type, due_date, estimate_min, is_completed)
          VALUES (:task_name, :subject, :task_type, :due_date, :estimate_min, FALSE)"
