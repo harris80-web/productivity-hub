@@ -36,7 +36,7 @@ $study_tasks = $stmt->fetchAll();
       <span></span>
     </div>
     <div class="topbar-left">
-      <a href="/index.html">
+      <a href="/api/api.php">
         <img src="/ASSETS/logo.svg" class="topbar-icon">
         <span>Student Productivity Hub</span>
       </a>

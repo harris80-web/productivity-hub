@@ -51,7 +51,7 @@ $urgent_tasks = $stmt->fetchAll();
     <nav class="navigation">
       <ul>
         <li>
-          <a href="/index.html">
+          <a href="/api/api.php">
             <img src="/ASSETS/dashboard.svg" class="nav-icon" alt="home">
             DASHBOARD
           </a>

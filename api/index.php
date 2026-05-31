@@ -1,3 +1,7 @@
+<?php
+// Make sure there's NO accidental include of api.php here
+require_once 'db_connection.php'; // only this, not api.php
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,7 +35,7 @@
     <nav class="navigation">
       <ul>
         <li class="active">
-            <a href="/index.html">
+            <a href="/api/index.php">
               <img src="ASSETS/dashboard.svg" class="nav-icon" alt="home">
               DASHBOARD
             </a>
