@@ -8,6 +8,8 @@ header('Content-Type: application/json');
 
 function addTask($pdo) {
     header('Content-Type: application/json');
+    echo json_encode(['success' => false, 'message' => 'debug', 'post' => $_POST]);
+    return;
     try {
         $stmt = $pdo->prepare(
             "INSERT INTO tasks (task_name, subject, task_type, due_date, estimate_min, is_completed)
