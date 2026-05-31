@@ -2,15 +2,16 @@
 require_once 'db_connection.php';
 
 $general_tasks = [];
-$sql = "SELECT id, task_name, subject, DATE_FORMAT(due_date, '%Y-%m-%d') AS due_date, estimate_min, task_type, is_completed FROM tasks WHERE task_type = 'General' ORDER BY due_date ASC, id ASC";
-
-$result = $conn->query($sql);
-
-if ($result && $result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $general_tasks[] = $row;
-    }
-}
+$stmt = $pdo->prepare(
+    "SELECT id, task_name, subject,
+            TO_CHAR(due_date, 'YYYY-MM-DD') AS due_date,
+            estimate_min, task_type, is_completed
+     FROM tasks
+     WHERE task_type = 'General'
+     ORDER BY due_date ASC, id ASC"
+);
+$stmt->execute();
+$general_tasks = $stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>

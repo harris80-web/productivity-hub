@@ -2,15 +2,16 @@
 require_once 'db_connection.php';
 
 $urgent_tasks = [];
-$sql = "SELECT id, task_name, subject, DATE_FORMAT(due_date, '%Y-%m-%d') AS due_date, estimate_min, task_type, is_completed FROM tasks WHERE task_type = 'Urgent' ORDER BY due_date ASC, id ASC";
-
-$result = $conn->query($sql);
-
-if ($result && $result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $urgent_tasks[] = $row;
-    }
-}
+$stmt = $pdo->prepare(
+    "SELECT id, task_name, subject,
+            TO_CHAR(due_date, 'YYYY-MM-DD') AS due_date,
+            estimate_min, task_type, is_completed
+     FROM tasks
+     WHERE task_type = 'Urgent'
+     ORDER BY due_date ASC, id ASC"
+);
+$stmt->execute();
+$urgent_tasks = $stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -167,7 +168,7 @@ if ($result && $result->num_rows > 0) {
               <?php if (!empty($urgent_tasks)): ?>
                     <?php foreach ($urgent_tasks as $task): ?>
                         <?php 
-                        $is_done = $task['is_completed'] == 1;
+                        $is_done = $task['is_completed'] === true || $task['is_completed'] === 't';
                         $card_class = $is_done ? ' task-done' : '';
                       ?>
                       <div class="task-card<?php echo $card_class; ?>" data-task-id="<?php echo $task['id']; ?>">

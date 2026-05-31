@@ -9,7 +9,7 @@ header("Access-Control-Allow-Headers: Content-Type");
 require_once __DIR__ . '/config/gemini_api.php';
 
 $GEMINI_KEY = $GEMINI_API_KEY ?? null;
-$MODEL = $GEMINI_MODEL ?? 'gemini-2.5-flash'; 
+$MODEL      = $GEMINI_MODEL   ?? 'gemini-2.5-flash';
 
 if (!$GEMINI_KEY) {
     http_response_code(500);
@@ -17,7 +17,7 @@ if (!$GEMINI_KEY) {
     exit;
 }
 
-$body = json_decode(file_get_contents('php://input'), true);
+$body   = json_decode(file_get_contents('php://input'), true);
 $prompt = trim($body['prompt'] ?? '');
 
 if ($prompt === '') {
@@ -52,22 +52,22 @@ $userPrompt = "Generate task suggestions based on: \"$prompt\"";
 $payload = [
     "contents" => [
         [
-            "role" => "user",
+            "role"  => "user",
             "parts" => [
-                ["text" => $systemInstruction . "\n\n" . $userPrompt] 
+                ["text" => $systemInstruction . "\n\n" . $userPrompt]
             ]
         ]
     ],
     "generationConfig" => [
         "responseMimeType" => "application/json",
-        "responseSchema" => [
-            "type" => "array",
+        "responseSchema"   => [
+            "type"  => "array",
             "items" => [
-                "type" => "object",
+                "type"       => "object",
                 "properties" => [
-                    "title" => ["type" => "string", "description" => "Short task name"],
-                    "subject" => ["type" => "string", "description" => "Subject name"],
-                    "category" => ["type" => "string", "description" => "'Study', 'General', or 'Urgent'"],
+                    "title"             => ["type" => "string",  "description" => "Short task name"],
+                    "subject"           => ["type" => "string",  "description" => "Subject name"],
+                    "category"          => ["type" => "string",  "description" => "'Study', 'General', or 'Urgent'"],
                     "estimated_minutes" => ["type" => "integer", "description" => "Estimated time in minutes"]
                 ],
                 "required" => ["title", "subject", "category", "estimated_minutes"]
@@ -88,9 +88,7 @@ $response = curl_exec($ch);
 
 if ($response === false) {
     http_response_code(500);
-    echo json_encode([
-        "curl_error" => curl_error($ch)
-    ]);
+    echo json_encode(["curl_error" => curl_error($ch)]);
     curl_close($ch);
     exit;
 }
@@ -101,24 +99,22 @@ curl_close($ch);
 if ($httpCode !== 200) {
     http_response_code($httpCode);
     echo json_encode([
-        "http_status" => $httpCode,
-        "response_raw" => $response,
-        "error_message" => "API request failed with HTTP status {$httpCode}."
+        "http_status"    => $httpCode,
+        "response_raw"   => $response,
+        "error_message"  => "API request failed with HTTP status {$httpCode}."
     ]);
     exit;
 }
 
-$data = json_decode($response, true);
-
+$data           = json_decode($response, true);
 $suggestionText = $data['candidates'][0]['content']['parts'][0]['text'] ?? null;
 
 if (empty($suggestionText)) {
     $block_reason = $data['candidates'][0]['safetyRatings'][0]['blockReason'] ?? 'NO_CANDIDATE_RESPONSE';
-
     http_response_code(500);
     echo json_encode([
-        "success" => false,
-        "error" => "AI failed to generate content or was blocked.",
+        "success"      => false,
+        "error"        => "AI failed to generate content or was blocked.",
         "raw_response" => $data,
         "block_reason" => $block_reason
     ]);
@@ -130,8 +126,8 @@ $suggestions = json_decode(trim($suggestionText), true);
 if ($suggestions === null) {
     http_response_code(500);
     echo json_encode([
-        'success' => false,
-        'error' => 'Failed to parse JSON output from AI.',
+        'success'           => false,
+        'error'             => 'Failed to parse JSON output from AI.',
         'raw_text_received' => $suggestionText
     ]);
     exit;
@@ -142,14 +138,14 @@ if (!is_array($suggestions) || (is_array($suggestions) && isset($suggestions['ti
 }
 
 foreach ($suggestions as &$s) {
-    $s['title'] = $s['title'] ?? "Untitled Task";
-    $s['subject'] = $s['subject'] ?? "General";
-    $s['category'] = $s['category'] ?? "General";
+    $s['title']             = $s['title']             ?? "Untitled Task";
+    $s['subject']           = $s['subject']           ?? "General";
+    $s['category']          = $s['category']          ?? "General";
     $s['estimated_minutes'] = isset($s['estimated_minutes']) ? intval($s['estimated_minutes']) : 30;
 }
 unset($s);
 
 echo json_encode([
-    "success" => true,
+    "success"     => true,
     "suggestions" => $suggestions
 ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
