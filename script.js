@@ -64,7 +64,7 @@ function createTaskHtml(task) {
                     <img src="ASSETS/edit.svg" alt="Edit" style="width: 20px; height: 20px;">
                 </button>
                 <button class="delete" title="Delete">
-                    <img src="ASSETS/delete.svg" alt="Edit" style="width: 20px; height: 20px;">
+                    <img src="ASSETS/delete.svg" alt="Delete" style="width: 20px; height: 20px;">
                 </button>
             </div>
         </article>
@@ -72,28 +72,27 @@ function createTaskHtml(task) {
 }
 
 function loadTasks() {
-    if (!taskListContent) { // Check for the new element
+    if (!taskListContent) {
         return;
     }
 
-    fetch('api.php', {
+    fetch('/api/api.php', {
         method: 'POST',
         body: new URLSearchParams('action=get_tasks') 
     })
     .then(response => {
-        // ... (check response.ok)
         return response.json();
     })
     .then(data => {
-        taskListContent.innerHTML = ''; // CLEARS ONLY THE DYNAMIC CONTENT
+        taskListContent.innerHTML = '';
         if (data.success && data.tasks && data.tasks.length > 0) {
             data.tasks.forEach(task => {
-                taskListContent.innerHTML += createTaskHtml(task); // ADDS TASKS TO THE CONTENT CONTAINER
+                taskListContent.innerHTML += createTaskHtml(task);
             });
         }
         updateTaskCounts(new Date()); 
     })
-    .catch(error => console.error('Error loading tasks (Check api.php):', error));
+    .catch(error => console.error('Error loading tasks:', error));
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -107,7 +106,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (!aiBtn || !aiPrompt || !aiContainer) return;
 
-    // Function to show/hide AI panel
     const showAiPanel = () => {
         aiPanel && aiPanel.classList.add('show');
     };
@@ -116,12 +114,10 @@ document.addEventListener('DOMContentLoaded', function() {
         aiPanel && aiPanel.classList.remove('show');
     };
 
-    // Close button handler
     if (aiCloseBtn) {
         aiCloseBtn.addEventListener('click', hideAiPanel);
     }
 
-    // Function to fetch and render suggestions
     const fetchAndRenderSuggestions = async (prompt) => {
         if (!prompt.trim()) {
             aiContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #aaa;">Enter a task description to get suggestions.</div>';
@@ -132,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function() {
         showAiPanel();
 
         try {
-            const res = await fetch('task_generator.php', {
+            const res = await fetch('/api/task_generator.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ prompt })
@@ -167,7 +163,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 aiContainer.appendChild(card);
             });
 
-            // Handle "Use" button clicks
             aiContainer.querySelectorAll('.use-suggestion').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const idx = parseInt(e.target.dataset.idx, 10);
@@ -188,7 +183,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    // AI Suggest button (when user types task name and clicks AI icon)
     aiBtn.addEventListener('click', async () => {
         const prompt = aiPrompt.value.trim();
         if (!prompt) {
@@ -198,7 +192,6 @@ document.addEventListener('DOMContentLoaded', function() {
         await fetchAndRenderSuggestions(prompt);
     });
 
-    // Search panel button and search input enter key
     if (aiPanelSuggestBtn) {
         aiPanelSuggestBtn.addEventListener('click', () => {
             const prompt = aiSearchInput.value.trim();
@@ -243,7 +236,7 @@ addTaskForm.addEventListener("submit", e => {
     const formData = new FormData(addTaskForm);
     formData.append('action', 'add_task'); 
 
-    fetch('api.php', {
+    fetch('/api/api.php', {
         method: 'POST',
         body: formData 
     })
@@ -260,16 +253,15 @@ addTaskForm.addEventListener("submit", e => {
             loadTasks(); 
         } else {
             console.error('API Error:', data.message);
-            alert('Error adding task: ' + (data.message || 'Unknown API error. Check the server log.'));
+            alert('Error adding task: ' + (data.message || 'Unknown error.'));
         }
     })
     .catch(error => {
         console.error('Network or Parsing Error:', error);
-        alert('Failed to connect to the backend. Check XAMPP/api.php and the browser console.');
+        alert('Failed to connect to the backend.');
     });
 });
 
-// FIX: Correctly wrap taskList event listeners to prevent crashing on secondary pages
 if (taskList) {
     taskList.addEventListener('click', (e) => {
         const taskItem = e.target.closest('.task-item');
@@ -278,7 +270,6 @@ if (taskList) {
         const taskId = taskItem.getAttribute('data-id');
 
         if (e.target.classList.contains('edit')) {
-            
             taskIdToEdit = taskId; 
             
             document.getElementById('editTaskName').value = taskItem.querySelector('.task-name').textContent;
@@ -304,18 +295,15 @@ deleteModal.querySelector('.delete-confirm').addEventListener('click', () => {
         formData.append('action', 'delete_task');
         formData.append('id', taskIdToDelete);
 
-        fetch('api.php', {
+        fetch('/api/api.php', {
             method: 'POST',
             body: formData
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Safely remove the element, checking if it exists first.
                 const itemToRemove = document.querySelector(`.task-item[data-id="${taskIdToDelete}"]`);
-                if (itemToRemove) {
-                    itemToRemove.remove();
-                }
+                if (itemToRemove) itemToRemove.remove();
                 taskIdToDelete = null;
                 deleteModal.style.display = "none";
                 updateTaskCounts(new Date()); 
@@ -337,11 +325,10 @@ editTaskForm.addEventListener("submit", e => {
     
     if (taskIdToEdit) {
         const formData = new FormData(editTaskForm);
-        
         formData.append('action', 'update_task');
         formData.append('id', taskIdToEdit); 
 
-        fetch('api.php', {
+        fetch('/api/api.php', {
             method: 'POST',
             body: formData
         })
@@ -372,7 +359,7 @@ if (taskList) {
             formData.append('id', taskId);
             formData.append('is_completed', isCompleted);
 
-            fetch('api.php', {
+            fetch('/api/api.php', {
                 method: 'POST',
                 body: formData
             })
@@ -435,16 +422,9 @@ function updateTaskCounts(now){
         
         if (!isChecked) {
             open++;
-
-            if (date === today) {
-                dueToday++;
-            }
-            if (date && date < today) {
-                overdue++;
-            }
-            if (type && type.toLowerCase().includes('urg')) {
-                urgent++;
-            }
+            if (date === today) dueToday++;
+            if (date && date < today) overdue++;
+            if (type && type.toLowerCase().includes('urg')) urgent++;
         } else {
             completed++;
         }

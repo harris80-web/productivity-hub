@@ -1,17 +1,10 @@
 {
   "functions": {
-    "api.php":            { "runtime": "vercel-php@0.7.2" },
-    "study.php":          { "runtime": "vercel-php@0.7.2" },
-    "general.php":        { "runtime": "vercel-php@0.7.2" },
-    "urgent.php":         { "runtime": "vercel-php@0.7.2" },
-    "task_generator.php": { "runtime": "vercel-php@0.7.2" }
+    "api/*.php": { "runtime": "vercel-php@0.7.2" }
   },
   "routes": [
-    { "src": "/api.php",            "dest": "/api.php" },
-    { "src": "/study.php",          "dest": "/study.php" },
-    { "src": "/general.php",        "dest": "/general.php" },
-    { "src": "/urgent.php",         "dest": "/urgent.php" },
-    { "src": "/task_generator.php", "dest": "/task_generator.php" },
-    { "src": "/(.*)",               "dest": "/$1" }
+    { "src": "/api/(.*\\.php)", "dest": "/api/$1" },
+    { "src": "/(.*\\.php)",     "dest": "/$1" },
+    { "src": "/(.*)",           "dest": "/$1" }
   ]
 }

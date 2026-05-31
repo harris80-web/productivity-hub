@@ -47,7 +47,7 @@ document.addEventListener('change', (e) => {
         formData.append('id', taskId);
         formData.append('is_completed', isCompleted);
 
-        fetch('api.php', {
+        fetch('/api/api.php', {
             method: 'POST',
             body: formData
         })

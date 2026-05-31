@@ -1,17 +1,17 @@
 <?php
 require_once 'db_connection.php';
 
-$general_tasks = [];
+$study_tasks = [];
 $stmt = $pdo->prepare(
     "SELECT id, task_name, subject,
             TO_CHAR(due_date, 'YYYY-MM-DD') AS due_date,
             estimate_min, task_type, is_completed
      FROM tasks
-     WHERE task_type = 'General'
+     WHERE task_type = 'Study'
      ORDER BY due_date ASC, id ASC"
 );
 $stmt->execute();
-$general_tasks = $stmt->fetchAll();
+$study_tasks = $stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -19,7 +19,7 @@ $general_tasks = $stmt->fetchAll();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GENERAL</title>
+    <title>STUDY</title>
     <link rel="icon" type="image/x-icon" href="ASSETS/logo.svg">
     <link rel="stylesheet" href="sgu.css">
     <script src="script.js" defer></script>
@@ -34,7 +34,7 @@ $general_tasks = $stmt->fetchAll();
     <span></span>
   </div>
   <div class="topbar-left">
-    <a href="index.html">
+    <a href="/index.html">
     <img src="ASSETS/logo.svg" class="topbar-icon">
     <span>Student Productivity Hub</span>
     </a>
@@ -48,7 +48,7 @@ $general_tasks = $stmt->fetchAll();
     <nav class="navigation">
       <ul>
         <li>
-            <a href="index.html">
+            <a href="/api/api.php">
               <img src="ASSETS/dashboard.svg" class="nav-icon" alt="home">
               DASHBOARD
             </a>
@@ -62,23 +62,23 @@ $general_tasks = $stmt->fetchAll();
           </div>
 
           <ul class="submenu">
-            <a href="study.php">
-              <li>
+            <a href="/api/study.php">
+              <li class="active">
                 <img src="ASSETS/study.svg" class="nav-icon" alt="study">
                 STUDY
               </li>
             </a>
             
-            <a href="general.php">
-            <li class="active">
-              <img src="ASSETS/general.svg" class="nav-icon" alt="general">
+            <a href="/api/general.php">
+            <li>
+              <img src="ASSETS/general.svg" class="nav-icon" alt="study">
               GENERAL
             </li>
             </a>
 
-            <a href="urgent.php">
+            <a href="/api/urgent.php">
             <li>
-              <img src="ASSETS/urgent.svg" class="nav-icon" alt="urgent">
+              <img src="ASSETS/urgent.svg" class="nav-icon" alt="study">
               URGENT
             </li>
             </a>
@@ -152,51 +152,7 @@ $general_tasks = $stmt->fetchAll();
 
   </div>
 
-      <main class="page-main">
-        <section class="page-panel">
-          <header class="panel-header">
-            <div class="panel-title">
-              <img src="ASSETS/general2.svg" class="panel-icon" alt="general">
-              <h1>GENERAL</h1>
-            </div>
-            <img src="ASSETS/taskList.svg" alt="Task Icon" class="task-list-icon">
-          </header>
-
-          <div class="panel-body">
-            <div class="tasks-area" id="generalContainer">
-              <?php if (!empty($general_tasks)): ?>
-                    <?php foreach ($general_tasks as $task): ?>
-                        <?php 
-                        $is_done = $task['is_completed'] == 1;
-                        $card_class = $is_done ? ' task-done' : '';
-                      ?>
-                      <div class="task-card<?php echo $card_class; ?>" data-task-id="<?php echo $task['id']; ?>">
-                      <div class="task-info">
-                        <input type="checkbox" class="task-checkbox" <?php echo $is_done ? 'checked' : ''; ?> />
-                                <div class="task-text">
-                                    <h4 class="task-name"><?php echo htmlspecialchars($task['task_name']); ?></h4>
-                                    <div class="task-details">
-                                        <span class="task-date"><?php echo $task['due_date']; ?></span>
-                                        <span class="task-time"><?php echo $task['estimate_min']; ?> min</span>
-                                        <span class="task-category"><?php echo htmlspecialchars($task['subject']); ?></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="task-actions">
-                                <button class="edit-task-btn" data-task-id="<?php echo $task['id']; ?>"><img src="ASSETS/edit.svg" alt="Edit" /></button>
-                                <button class="delete-task-btn" data-task-id="<?php echo $task['id']; ?>"><img src="ASSETS/delete.svg" alt="Delete" /></button>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <p class="no-tasks">No general tasks found!</p>
-                <?php endif; ?>
-            </div>
-          </div>
-        </section>
-      </main>
-
-    <!-- Delete Confirmation Modal -->
+  <!-- Delete Confirmation Modal -->
   <div id="deleteModal" class="modal">
     <div class="modal-box small">
       <h2>DELETE TASK?</h2>
@@ -252,5 +208,49 @@ $general_tasks = $stmt->fetchAll();
     </div>
   </div>
 
+    <main class="page-main">
+      <section class="page-panel">
+        <header class="panel-header">
+          <div class="panel-title">
+            <img src="ASSETS/study2.svg" class="panel-icon" alt="study">
+            <h1>STUDY</h1>
+          </div>
+          <img src="ASSETS/taskList.svg" alt="Task Icon" class="task-list-icon">
+        </header>
+
+        <div class="panel-body">
+          <div class="tasks-area" id="studyContainer">
+            <?php if (!empty($study_tasks)): ?>
+                    <?php foreach ($study_tasks as $task): ?>
+                      <?php 
+                        $is_done = $task['is_completed'] == 1;
+                        $card_class = $is_done ? ' task-done' : '';
+                      ?>
+                      <div class="task-card<?php echo $card_class; ?>" data-task-id="<?php echo $task['id']; ?>">
+    <div class="task-info">
+        <input type="checkbox" class="task-checkbox" <?php echo $is_done ? 'checked' : ''; ?> />
+        <div class="task-text">
+            <h4 class="task-name"><?php echo htmlspecialchars($task['task_name']); ?></h4>
+            <div class="task-details">
+                <span class="task-date"><?php echo $task['due_date']; ?></span>
+                <span class="task-time"><?php echo $task['estimate_min']; ?> min</span>
+                <span class="task-category"><?php echo htmlspecialchars($task['subject']); ?></span>
+                <span class="task-type-hidden" style="display:none;"><?php echo htmlspecialchars($task['task_type']); ?></span>
+            </div>
+        </div>
+    </div>
+    <div class="task-actions">
+        <button class="edit-task-btn" data-task-id="<?php echo $task['id']; ?>"><img src="ASSETS/edit.svg" alt="Edit" /></button>
+        <button class="delete-task-btn" data-task-id="<?php echo $task['id']; ?>"><img src="ASSETS/delete.svg" alt="Delete" /></button>
+    </div>
+</div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p class="no-tasks">No study tasks found!</p>
+                <?php endif; ?>
+          </div>
+        </div>
+      </section>
+    </main>
 </body>
 </html>
