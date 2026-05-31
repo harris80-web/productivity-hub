@@ -5,18 +5,23 @@ header('Content-Type: application/json');
 
 function addTask($pdo) {
     header('Content-Type: application/json');
-    $stmt = $pdo->prepare(
-        "INSERT INTO tasks (task_name, subject, task_type, due_date, estimate_min, is_completed)
-         VALUES (:task_name, :subject, :task_type, :due_date, :estimate_min, FALSE)"
-    );
-    $stmt->execute([
-        ':task_name'    => $_POST['task_name'],
-        ':subject'      => $_POST['subject'],
-        ':task_type'    => $_POST['task_type'],
-        ':due_date'     => $_POST['due_date'],
-        ':estimate_min' => (int)$_POST['estimate_min'],
-    ]);
-    echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
+    try {
+        $stmt = $pdo->prepare(
+            "INSERT INTO tasks (task_name, subject, task_type, due_date, estimate_min, is_completed)
+             VALUES (:task_name, :subject, :task_type, :due_date, :estimate_min, FALSE)"
+        );
+        $stmt->execute([
+            ':task_name'    => $_POST['task_name'],
+            ':subject'      => $_POST['subject'],
+            ':task_type'    => $_POST['task_type'],
+            ':due_date'     => $_POST['due_date'],
+            ':estimate_min' => (int)$_POST['estimate_min'],
+        ]);
+        echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
+    } catch (Exception $e) {
+        http_response_code(500);
+        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+    }
 }
 
 function getTasks($pdo) {
