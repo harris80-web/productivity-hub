@@ -105,7 +105,7 @@
 
       <form id="addTaskForm">
         <div class="full-row">
-          <label>Task Name:</label>
+          <label for="task_name">Task Name:</label>
           <input type="text" id="taskName" name="task_name" required>
 
           <button type="button" id="aiSuggestBtn" class="ai-suggest-btn" aria-label="AI Suggest">
@@ -115,11 +115,11 @@
 
         <div class="two-col">
           <div>
-            <label>Subject:</label>
+            <label for="subject">Subject:</label>
             <input type="text" id="taskSubject" name="subject" required>
           </div>
           <div>
-            <label>Task Type:</label>
+            <label for="task_type">Task Type:</label>
             <select id="taskType" name="task_type" required>
               <option>Study</option>
               <option>General</option>
@@ -130,11 +130,11 @@
 
         <div class="two-col">
           <div>
-            <label>Due Date:</label>
+            <label for="due_date">Due Date:</label>
             <input type="date" id="taskDate" name="due_date" required>
           </div>
           <div>
-            <label>Estimate (min):</label>
+            <label for="estimate_min">Estimate (min):</label>
             <input type="number" id="taskTime" name="estimate_min" required>
           </div>
         </div>
