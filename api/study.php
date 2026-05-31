@@ -20,10 +20,10 @@ $study_tasks = $stmt->fetchAll();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>STUDY</title>
-    <link rel="icon" type="image/x-icon" href="ASSETS/logo.svg">
-    <link rel="stylesheet" href="sgu.css">
-    <script src="script.js" defer></script>
-    <script src="sgu.js" defer></script>
+    <link rel="icon" type="image/x-icon" href="/ASSETS/logo.svg">
+    <link rel="stylesheet" href="/sgu.css">
+    <script src="/script.js" defer></script>
+    <script src="/sgu.js" defer></script>
 </head>
 <body>
     <!-- TOP BAR -->
@@ -49,7 +49,7 @@ $study_tasks = $stmt->fetchAll();
       <ul>
         <li>
             <a href="/api/api.php">
-              <img src="ASSETS/dashboard.svg" class="nav-icon" alt="home">
+              <img src="/ASSETS/dashboard.svg" class="nav-icon" alt="home">
               DASHBOARD
             </a>
         </li>

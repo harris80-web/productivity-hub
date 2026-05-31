@@ -20,10 +20,10 @@ $urgent_tasks = $stmt->fetchAll();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>URGENT</title>
-    <link rel="icon" type="image/x-icon" href="ASSETS/logo.svg">
-    <link rel="stylesheet" href="sgu.css">
-    <script src="script.js" defer></script>
-    <script src="sgu.js" defer></script>
+    <link rel="icon" type="image/x-icon" href="/ASSETS/logo.svg">
+    <link rel="stylesheet" href="/sgu.css">
+    <script src="/script.js" defer></script>
+    <script src="/sgu.js" defer></script>
 </head>
 <body>
     
