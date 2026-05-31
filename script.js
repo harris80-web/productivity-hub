@@ -236,7 +236,7 @@ addTaskForm.addEventListener("submit", e => {
     const formData = new FormData(addTaskForm);
     formData.append('action', 'add_task'); 
 
-    fetch('api/api.php', {
+    fetch('/api/api.php', {
         method: 'POST',
         body: formData 
     })
